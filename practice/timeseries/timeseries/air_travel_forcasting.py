@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.contrib import rnn
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 
 def get_lstm_estimator(num_of_lstm):
@@ -81,9 +82,10 @@ def examine_result(labels, predictions):
 
 
 def run():
-    path = "/Users/stevenchen/Downloads/international-airline-passengers.csv"
+    resources_dir_path = os.path.join(os.path.dirname(__file__), 'resources')
+    file_path = os.path.join(resources_dir_path, "international-airline-passengers.csv")
     time_step = 20
-    train, test = load_data(path, 0.7, time_step)
+    train, test = load_data(file_path, 0.7, time_step)
     estimator = get_lstm_estimator(num_of_lstm=2)
     estimator.train(input_fn=lambda: input_fn(series=train, time_steps=time_step, epoch=1000, batch_size=5))
     r = estimator.evaluate(input_fn=lambda: input_fn(train, time_steps=time_step, epoch=1, batch_size=5))
